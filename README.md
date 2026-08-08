@@ -16,7 +16,7 @@ The name is literal: Round Robin is a rotation. New tabs come in, the least rece
 
 ## How I use it
 
-I set my budget to 15 tabs. That's it, mostly. I browse exactly like before, open whatever I want, and Chrome simply never gets past 15 tabs. The tab that leaves is always the one I've ignored the longest, which in practice is a tab I'd forgotten existed.
+I set my budget to 25 tabs. That's it, mostly. I browse exactly like before, open whatever I want, and Chrome simply never gets past 25 tabs. The tab that leaves is always the one I've ignored the longest, which in practice is a tab I'd forgotten existed.
 
 Maybe there's a tab I actually want to keep around, a doc I'm working from all day. I click the extension icon and hit "Protect this tab", and it's off the table (it gets a green check on the icon). Chrome's native pinned tabs are respected the same way.
 
