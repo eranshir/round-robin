@@ -45,11 +45,18 @@ Tag any domain with its own cap (default 1, editable per domain). When a tab lan
 
 ## Install
 
-1. Open `chrome://extensions`
-2. Enable **Developer mode** (top right)
-3. Click **Load unpacked** and select this folder
+The quick way, one file:
 
-One heads-up: if you're currently way over the budget, the extension starts enforcing on the next tab you open. Pin or protect anything you care about first, or set a generous budget and walk it down.
+1. Download [`release/round-robin.zip`](release/round-robin.zip) and unzip it. You'll get a `round-robin` folder. Keep it somewhere permanent, Chrome loads the extension from that folder.
+2. Open `chrome://extensions`
+3. Enable **Developer mode** (top right)
+4. Click **Load unpacked** and select the `round-robin` folder
+
+(Chrome doesn't allow installing packaged `.crx` files from outside the Web Store, so unzip-and-load is the way until this lands in the store.)
+
+If you cloned the repo instead, skip the download and point **Load unpacked** at the repo folder itself.
+
+One heads-up: if you're currently way over the budget (default: 25 tabs), the extension starts enforcing on the next tab you open. Pin or protect anything you care about first, or set a generous budget and walk it down.
 
 ## Under the hood
 

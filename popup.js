@@ -1,4 +1,4 @@
-const DEFAULT_MAX_TABS = 10;
+const DEFAULT_MAX_TABS = 25;
 
 const maxTabsInput = document.getElementById("maxTabs");
 const protectBtn = document.getElementById("protectBtn");

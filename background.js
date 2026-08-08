@@ -1,4 +1,4 @@
-const DEFAULT_MAX_TABS = 10;
+const DEFAULT_MAX_TABS = 25;
 
 // --- last-used tracking -----------------------------------------------------
 // Tab IDs and usage times live in storage.session so they survive service
