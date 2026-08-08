@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        width: 280px;
+        margin: 0;
+        padding: 14px;
+        font-size: 13px;
+        color: #1f2328;
+      }
+      h1 {
+        font-size: 14px;
+        margin: 0 0 12px;
+      }
+      h2 {
+        font-size: 12px;
+        margin: 16px 0 8px;
+        color: #656d76;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        gap: 8px;
+      }
+      label {
+        flex: 1;
+      }
+      input[type="number"] {
+        width: 52px;
+        padding: 4px 6px;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        font-size: 13px;
+      }
+      select {
+        padding: 4px 6px;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        font-size: 12.5px;
+        background: #fff;
+      }
+      button {
+        width: 100%;
+        padding: 7px 0;
+        border: none;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        background: #1a7f37;
+        color: #fff;
+      }
+      button.protected {
+        background: #cf222e;
+      }
+      button:disabled {
+        background: #d0d7de;
+        cursor: default;
+      }
+      .rule {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+      .rule .domain {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .rule .remove {
+        width: 22px;
+        height: 22px;
+        padding: 0;
+        line-height: 1;
+        background: transparent;
+        color: #cf222e;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .hint {
+        margin-top: 10px;
+        color: #656d76;
+        font-size: 11.5px;
+        line-height: 1.4;
+      }
+      .count {
+        color: #656d76;
+        font-size: 11.5px;
+        margin-bottom: 10px;
+      }
+      .empty {
+        color: #656d76;
+        font-size: 11.5px;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Round Robin</h1>
+    <div class="count" id="count"></div>
+    <div class="row">
+      <label for="maxTabs">Max tabs</label>
+      <input type="number" id="maxTabs" min="1" max="200" />
+    </div>
+    <div class="row">
+      <label for="scope">Count tabs</label>
+      <select id="scope">
+        <option value="global">Across all windows</option>
+        <option value="window">Per window</option>
+      </select>
+    </div>
+    <button id="protectBtn"></button>
+
+    <h2>Domain limits</h2>
+    <div id="rulesList"></div>
+    <button id="tagBtn"></button>
+
+    <div class="hint">
+      Opening a tab on a tagged domain closes the least-recently-used tab of
+      that same domain once it exceeds its limit (across all windows).
+      Protected tabs and Chrome-pinned tabs are never auto-closed.
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

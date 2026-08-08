@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Round Robin",
+  "version": "1.0.0",
+  "description": "Keeps the number of open tabs under a limit by closing the least-recently-used tab. Pinned and protected tabs are never closed.",
+  "permissions": ["tabs", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Round Robin"
+  }
+}
