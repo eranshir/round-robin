@@ -56,7 +56,7 @@ function matchRule(hostname, domainRules) {
   return null;
 }
 
-async function enforceDomainLimit(domain, newTabId) {
+async function enforceDomainLimit(domain, newTabId, openerTabId) {
   const { domainRules = {} } = await chrome.storage.sync.get("domainRules");
   const limit = parseInt(domainRules[domain], 10);
   if (!Number.isFinite(limit) || limit < 1) return;
@@ -80,17 +80,25 @@ async function enforceDomainLimit(domain, newTabId) {
         !t.active &&
         !t.audible &&
         t.id !== newTabId &&
+        t.id !== openerTabId &&
         !protectedIds.includes(t.id)
     )
+    // Least recently used first. Chrome's own lastAccessed is authoritative;
+    // our tracked map is the fallback for browsers that don't expose it.
     .sort(
       (a, b) =>
-        (lastUsed[a.id] ?? a.lastAccessed ?? a.index) -
-        (lastUsed[b.id] ?? b.lastAccessed ?? b.index)
+        (a.lastAccessed ?? lastUsed[a.id] ?? a.index) -
+        (b.lastAccessed ?? lastUsed[b.id] ?? b.index)
     );
 
   for (const tab of candidates) {
     if (excess <= 0) break;
     try {
+      console.log(
+        `[round-robin] domain cap ${domain} (${domainTabs.length}/${limit}): closing LRU tab`,
+        tab.id,
+        tab.url
+      );
       await chrome.tabs.remove(tab.id);
       excess--;
     } catch (e) {
@@ -108,7 +116,7 @@ async function getMaxTabs() {
 }
 
 // The budget always counts tabs across all windows.
-async function enforceLimit(newTabId) {
+async function enforceLimit(newTabId, openerTabId) {
   const [maxTabs, lastUsed, protectedIds] = await Promise.all([
     getMaxTabs(),
     getSession("lastUsed", {}),
@@ -126,19 +134,25 @@ async function enforceLimit(newTabId) {
         !t.active &&
         !t.audible &&
         t.id !== newTabId &&
+        t.id !== openerTabId &&
         !protectedIds.includes(t.id)
     )
-    // Least recently used first. Prefer our own tracking; fall back to
-    // Chrome's lastAccessed, then to tab index (leftmost = oldest).
+    // Least recently used first. Chrome's own lastAccessed is authoritative;
+    // our tracked map is the fallback for browsers that don't expose it.
     .sort(
       (a, b) =>
-        (lastUsed[a.id] ?? a.lastAccessed ?? a.index) -
-        (lastUsed[b.id] ?? b.lastAccessed ?? b.index)
+        (a.lastAccessed ?? lastUsed[a.id] ?? a.index) -
+        (b.lastAccessed ?? lastUsed[b.id] ?? b.index)
     );
 
   for (const tab of candidates) {
     if (excess <= 0) break;
     try {
+      console.log(
+        `[round-robin] over budget (${tabs.length}/${maxTabs}): closing LRU tab`,
+        tab.id,
+        tab.url
+      );
       await chrome.tabs.remove(tab.id);
       excess--;
     } catch (e) {
@@ -166,7 +180,7 @@ async function updateBadge(tabId) {
 chrome.tabs.onCreated.addListener(async (tab) => {
   if (tab.id === undefined) return;
   await touchTab(tab.id);
-  await enforceLimit(tab.id);
+  await enforceLimit(tab.id, tab.openerTabId);
 });
 
 // Domain rules trigger when a tab's URL commits onto a tagged domain it

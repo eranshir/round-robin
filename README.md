@@ -32,6 +32,7 @@ And then there are the repeat offenders. I somehow always end up with six x.com 
   - The tab you're currently looking at, in any window
   - Tabs playing audio
   - The tab you just opened
+  - The tab you opened it from. Clicking a link should never kill the page you clicked it on.
 - Lowering the budget trims you down to it immediately.
 - Tab protection lasts as long as the tab does. It clears when the tab closes or the browser restarts (Chrome tab identities don't survive restarts). Pinning survives restarts, so pin what you want kept forever.
 
