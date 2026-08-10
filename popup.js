@@ -3,7 +3,6 @@ const DEFAULT_MAX_TABS = 25;
 const maxTabsInput = document.getElementById("maxTabs");
 const protectBtn = document.getElementById("protectBtn");
 const countEl = document.getElementById("count");
-const scopeSelect = document.getElementById("scope");
 const rulesList = document.getElementById("rulesList");
 const tagBtn = document.getElementById("tagBtn");
 
@@ -107,14 +106,13 @@ function renderTagButton(rules) {
 }
 
 async function init() {
-  const [{ maxTabs, scope }, [tab]] = await Promise.all([
-    chrome.storage.sync.get(["maxTabs", "scope"]),
+  const [{ maxTabs }, [tab]] = await Promise.all([
+    chrome.storage.sync.get("maxTabs"),
     chrome.tabs.query({ active: true, currentWindow: true }),
   ]);
   currentTab = tab;
   currentDomain = hostnameOf(tab?.url);
   maxTabsInput.value = maxTabs ?? DEFAULT_MAX_TABS;
-  scopeSelect.value = scope === "window" ? "window" : "global";
 
   const [allTabs, tabsInWindow] = await Promise.all([
     chrome.tabs.query({}),
@@ -134,10 +132,6 @@ maxTabsInput.addEventListener("change", async () => {
   if (Number.isFinite(n) && n > 0) {
     await chrome.storage.sync.set({ maxTabs: n });
   }
-});
-
-scopeSelect.addEventListener("change", async () => {
-  await chrome.storage.sync.set({ scope: scopeSelect.value });
 });
 
 protectBtn.addEventListener("click", async () => {

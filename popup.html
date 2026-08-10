@@ -39,13 +39,6 @@
         border-radius: 6px;
         font-size: 13px;
       }
-      select {
-        padding: 4px 6px;
-        border: 1px solid #d0d7de;
-        border-radius: 6px;
-        font-size: 12.5px;
-        background: #fff;
-      }
       button {
         width: 100%;
         padding: 7px 0;
@@ -108,15 +101,8 @@
     <h1>Round Robin</h1>
     <div class="count" id="count"></div>
     <div class="row">
-      <label for="maxTabs">Max tabs</label>
+      <label for="maxTabs">Max tabs (all windows)</label>
       <input type="number" id="maxTabs" min="1" max="200" />
-    </div>
-    <div class="row">
-      <label for="scope">Count tabs</label>
-      <select id="scope">
-        <option value="global">Across all windows</option>
-        <option value="window">Per window</option>
-      </select>
     </div>
     <button id="protectBtn"></button>
 

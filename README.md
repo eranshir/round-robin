@@ -24,7 +24,7 @@ And then there are the repeat offenders. I somehow always end up with six x.com 
 
 ## The rules
 
-- The budget counts tabs across all your windows by default (a popup setting switches it to per-window).
+- The budget counts tabs across all your windows. Always. Ten windows don't buy you ten budgets.
 - When a new tab pushes you over the budget, the least recently used tab is closed. "Least recently used" means the tab you haven't activated for the longest time.
 - Never auto-closed:
   - Chrome-pinned tabs
