@@ -1,5 +1,15 @@
 const DEFAULT_MAX_TABS = 25;
 
+// Tabs used (or opened) within this window are never auto-closed. Freshly
+// batch-opened tabs must get a chance to be read before the cull.
+const GRACE_MS = 10 * 60 * 1000;
+
+// A tab's effective last-use time. Chrome's lastAccessed is authoritative;
+// our tracked map covers tabs where it's missing or stale.
+function lastUsedTime(tab, lastUsed) {
+  return Math.max(tab.lastAccessed ?? 0, lastUsed[tab.id] ?? 0);
+}
+
 // --- last-used tracking -----------------------------------------------------
 // Tab IDs and usage times live in storage.session so they survive service
 // worker suspension but reset with the browser (tab IDs are not stable
@@ -81,15 +91,11 @@ async function enforceDomainLimit(domain, newTabId, openerTabId) {
         !t.audible &&
         t.id !== newTabId &&
         t.id !== openerTabId &&
-        !protectedIds.includes(t.id)
+        !protectedIds.includes(t.id) &&
+        lastUsedTime(t, lastUsed) < Date.now() - GRACE_MS
     )
-    // Least recently used first. Chrome's own lastAccessed is authoritative;
-    // our tracked map is the fallback for browsers that don't expose it.
-    .sort(
-      (a, b) =>
-        (a.lastAccessed ?? lastUsed[a.id] ?? a.index) -
-        (b.lastAccessed ?? lastUsed[b.id] ?? b.index)
-    );
+    // Least recently used first.
+    .sort((a, b) => lastUsedTime(a, lastUsed) - lastUsedTime(b, lastUsed));
 
   for (const tab of candidates) {
     if (excess <= 0) break;
@@ -135,15 +141,11 @@ async function enforceLimit(newTabId, openerTabId) {
         !t.audible &&
         t.id !== newTabId &&
         t.id !== openerTabId &&
-        !protectedIds.includes(t.id)
+        !protectedIds.includes(t.id) &&
+        lastUsedTime(t, lastUsed) < Date.now() - GRACE_MS
     )
-    // Least recently used first. Chrome's own lastAccessed is authoritative;
-    // our tracked map is the fallback for browsers that don't expose it.
-    .sort(
-      (a, b) =>
-        (a.lastAccessed ?? lastUsed[a.id] ?? a.index) -
-        (b.lastAccessed ?? lastUsed[b.id] ?? b.index)
-    );
+    // Least recently used first.
+    .sort((a, b) => lastUsedTime(a, lastUsed) - lastUsedTime(b, lastUsed));
 
   for (const tab of candidates) {
     if (excess <= 0) break;

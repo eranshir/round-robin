@@ -33,6 +33,7 @@ And then there are the repeat offenders. I somehow always end up with six x.com 
   - Tabs playing audio
   - The tab you just opened
   - The tab you opened it from. Clicking a link should never kill the page you clicked it on.
+  - Any tab opened or used in the last 10 minutes. When I open five listings in background tabs to compare, those are unread work, not clutter. They get a grace period before they're fair game.
 - Lowering the budget trims you down to it immediately.
 - Tab protection lasts as long as the tab does. It clears when the tab closes or the browser restarts (Chrome tab identities don't survive restarts). Pinning survives restarts, so pin what you want kept forever.
 
@@ -42,7 +43,7 @@ Tag any domain with its own cap (default 1, editable per domain). When a tab lan
 
 - Domain caps apply across all windows.
 - Subdomains match: tagging `x.com` also covers `www.x.com` and `mobile.x.com`.
-- The same exemptions hold. Pinned, protected, active, and audio-playing tabs stay.
+- The same exemptions hold. Pinned, protected, active, audio-playing, and fresh (under 10 minutes) tabs stay. So batch-opening a handful of tabs from a capped site works fine; the cap catches up with the stale ones later.
 
 ## Install
 
